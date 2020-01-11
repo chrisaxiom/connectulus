@@ -1,6 +1,4 @@
-# Evaluator
+# Connectulus
 ## Purpose
-Package auth provides (mock) implementations of functions useful for
-connecting users to a remote application.
+Connectulus provides connectivity and session management to Trisolan hub infrastructure.
 
-## Contents
