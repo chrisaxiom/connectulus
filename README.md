@@ -1,7 +1,7 @@
 # Connectulus
-*Connectulus* provides connectivity and session management to *Trisolian* hub infrastructure.
+**Connectulus** provides connectivity and session management to **Trisolian** hub infrastructure.
 
-*Trisol* is a proprietary (and fictional) remote infrastructure domain providing server and application
+**Trisol** is a proprietary (and fictional) remote infrastructure domain providing server and application
 resources on demand. 
 
 ## Status
@@ -12,4 +12,4 @@ Next steps will be around session management -- connecting a user to the Trisoli
 infrastructure securely and maintaining this connection through multiple requests for
 resources.
 
-Please see the [issues](https://github.com/trisolaria/connectulus/issues) for up-to-date status.
+Please see the [issues](https://github.com/trisolaria/connectulus/issues?q=is%3Aissue+is%3Aopen+sort%3Acreated-asc) for up-to-date status.
