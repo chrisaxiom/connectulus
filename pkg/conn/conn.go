@@ -15,6 +15,11 @@ type SophonicConnection struct {
 // ConnectSophon establishes a sophonic connection to a remote resource and returns a
 // SophonicConnection that can be used for communication
 func ConnectSophon() *SophonicConnection {
-	time.Sleep(time.Duration(rand.Intn(5)) * time.Second)
+	delay := rand.Intn(5)
+	time.Sleep(time.Duration(delay) * time.Second)
 	return &SophonicConnection{}
+}
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
 }
