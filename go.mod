@@ -1,3 +1,3 @@
-module github.com/trisolaria/connectulus
+module github.com/chrisaxiom/connectulus
 
-go 1.13
+go 1.14
