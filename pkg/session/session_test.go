@@ -2,7 +2,6 @@ package session
 
 import (
 	"testing"
-	"time"
 )
 
 var authenticateTestCases = []struct {
@@ -49,10 +48,9 @@ func TestAuthenticate(t *testing.T) {
 
 func TestUserSessionAuthenticate(t *testing.T) {
 	for _, td := range authenticateTestCases {
-		userSession := UserSession{
-			UserName: td.UserName,
-			Password: td.Password,
-		}
+		userSession := NewUserSession(
+			WithUserName(td.UserName),
+			WithPassword(td.Password))
 		result := userSession.AuthenticateSession()
 		if result != td.Result {
 			t.Errorf("expected %t, got %t", td.Result, result)
@@ -66,46 +64,48 @@ func TestUserSessionAuthenticate(t *testing.T) {
 
 func TestConnectValid(t *testing.T) {
 	// create a session that is authenticated
+	// may look to DRYify this instantiation, as it is now
+	// very deep into the internal workings
 	userSession := UserSession{
 		sessionIsAuthenticated: true,
+		connChan:               make(chan bool, 1),
 	}
+
 	// connect
-	userSession.Connect()
+	ch := userSession.Connect()
+	connected := <-ch
 
-	// verify connection is established eventually
-	isNil := true
-	for i := 0; i < 51; i++ {
-		time.Sleep(10 * time.Millisecond)
-		if userSession.connection() != nil {
-			isNil = false
-			break
-		}
+	// expect connected to be true
+	if !connected {
+		t.Error("expected connected to be true")
 	}
 
-	if isNil {
-		t.Error("expected connection to not be nil after a period of time")
+	// verify actual connection
+	con := userSession.connection()
+	if con == nil {
+		t.Error("expected connection to be not nil")
 	}
 }
 
 func TestConnectInValid(t *testing.T) {
-	// create a session that is not authenticated
+	// create a session that
 	userSession := UserSession{
 		sessionIsAuthenticated: false,
+		connChan:               make(chan bool, 1),
 	}
+
 	// connect
-	userSession.Connect()
+	ch := userSession.Connect()
+	connected := <-ch
 
-	// verify that connection is not established
-	isNotNil := false
-	for i := 0; i < 51; i++ {
-		time.Sleep(10 * time.Millisecond)
-		if userSession.connection() != nil {
-			isNotNil = true
-			break
-		}
+	// expect connected to be false
+	if connected {
+		t.Error("expected connected to be false")
 	}
 
-	if isNotNil {
-		t.Error("expected connection to be nil after a period of time")
+	// verify actual connection is nil
+	con := userSession.connection()
+	if con != nil {
+		t.Error("expected connection to be nil")
 	}
 }
